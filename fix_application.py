@@ -14,6 +14,10 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 
+# Username and password
+USERNAME = "your_username"
+PASSWORD = "your_password"
+
 
 class FixApp(Application):
     def onCreate(self, sessionID):
@@ -26,6 +30,10 @@ class FixApp(Application):
         logging.info(f"Logout: {sessionID}")
 
     def toAdmin(self, message, sessionID):
+        msgType = fix.MsgType()
+        if message.getHeader().getField(msgType).getValue() == fix.MsgType_Logon:
+            message.setField(fix.Username(USERNAME))
+            message.setField(fix.Password(PASSWORD))
         logging.info(f"ToAdmin: {message}")
 
     def fromAdmin(self, message, sessionID):
