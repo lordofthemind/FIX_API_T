@@ -1,0 +1,7 @@
+username = "username"
+
+password = "password"
+
+sender_comp_id_for_data = "sender_comp_id_for_data"
+
+target_comp_id = "target_comp_id"

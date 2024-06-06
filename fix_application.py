@@ -4,6 +4,7 @@ import quickfix.Session as Session
 import logging
 import os
 from generate_messages import *
+from cred import username, password, sender_comp_id_for_data, target_comp_id
 
 # Setup logging
 if not os.path.exists("logs"):
@@ -15,10 +16,13 @@ logging.basicConfig(
 )
 
 # Username and password
-USERNAME = "your_username"
-PASSWORD = "your_password"
+USERNAME = username
+PASSWORD = password
+SENDER_COMP_ID_FOR_DATA = sender_comp_id_for_data
+TARGET_COMP_ID = target_comp_id
 
 
+# Application class
 class FixApp(Application):
     def onCreate(self, sessionID):
         logging.info(f"Session created: {sessionID}")
@@ -58,14 +62,14 @@ def send_message(sessionID, message):
 
 def main():
     try:
-        settings = fix.SessionSettings("config/fix.cfg")
+        settings = fix.SessionSettings("client_market_data2.cfg")
         application = FixApp()
         storeFactory = fix.FileStoreFactory(settings)
         logFactory = fix.FileLogFactory(settings)
         initiator = fix.SocketInitiator(application, storeFactory, settings, logFactory)
         initiator.start()
 
-        sessionID = fix.SessionID("FIX.4.4", "SENDER_COMP_ID", "TARGET_COMP_ID")
+        sessionID = fix.SessionID("FIX.4.4", SENDER_COMP_ID_FOR_DATA, TARGET_COMP_ID)
 
         # Example usages:
 
